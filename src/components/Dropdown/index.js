@@ -1,15 +1,13 @@
-import './Dropdown.css'
+import './dropdown.css'
 
-const Dropdown = (props) => {
-  return (
-    <div className='dropdown'>
-        <label>{props.label}</label>
-        <select onChange={event => props.onChanging(event.target.value)} required={props.required} value={props.fieldValue}>
-            <option value=""></option>
-            {props.items.map (item => <option key={item}>{item}</option>)}
+const Dropdown = ({label, items,  fieldValue, onChanged, mandatory = false}) => {
+    return (<div className="dropdown">
+        <label>{label}</label>
+        <select required={mandatory} value={fieldValue} onChange={event => onChanged(event.target.value)}>
+            <option />
+            {items.map(item => <option key={item}>{item}</option>)}
         </select>
-    </div>
-  )
+    </div>)
 }
 
 export default Dropdown

@@ -1,15 +1,31 @@
 import Employee from '../Employee'
-import './Team.css'
+import hexToRgba from 'hex-to-rgba';
+import './team.css'
 
-const Team = (props) => {
-  return (
-    props.employees.length > 0 && <section className='team' style={{backgroundColor: props.colorSecondary}}>
-        <h3 style={{borderColor: props.colorPrimary}}>{props.name}</h3>
-        <div className='employees'>
-          {props.employees.map(employee => <Employee bgColor={props.colorPrimary} key={employee.name} name={employee.name} position={employee.position} image={employee.image}/>)}
-        </div>
-    </section>
-  )
+const Team = ({ team, employees, onDelete, changeColor, onFavorite }) => {
+    return (
+
+        employees.length > 0 && <section className='team' style={{ backgroundImage: 'url(/img/fundo.png)', backgroundColor: hexToRgba(team.color, '0.6') }}>
+            <input type='color' className='input-color' value={team.color} onChange={event => {
+                changeColor(event.target.value, team.id);
+            }} />
+            <h3 style={{ borderColor: team.color }}>{team.name}</h3>
+            <div className='employees'>
+                {employees.map((employee, index) => {
+                    return (
+                        <Employee
+                            key={index}
+                            employee={employee}
+                            bgColor={team.color}
+                            onDelete={onDelete}
+                            onFavorite={onFavorite}
+                        />
+                    )
+                })}
+            </div>
+        </section>
+
+    )
 }
 
 export default Team

@@ -1,67 +1,81 @@
 import { useState } from 'react'
 import Button from '../Button'
+import Field from '../Field'
 import Dropdown from '../Dropdown'
-import TextField from '../TextField'
-import './Form.css'
+import './form.css'
 
-const Form = (props) => {
+const Form = ({onRegister, teams, registerTeam}) => {
 
-  const [name, setName] = useState('')
-  const [position, setPosition] = useState('')
-  const [image, setImage] = useState('')
-  const [team, setTeam] = useState('')
+    const [name, setName] = useState('')
+    const [position, setPosition] = useState('')
+    const [image, setImage] = useState('')
+    const [team, setTeam] = useState('')
+    const [nameTeam, setNameTeam] = useState('')
+    const [colorTeam, setColorTeam] = useState('')
 
-  const onSave = (event) => {
-    event.preventDefault()
-    props.onRegisteredEmployee({
-      name,
-      position,
-      image,
-      team
-    })
-    setName('')
-    setPosition('')
-    setImage('')
-    setTeam('')
-  }
+    const onSubmit = (event) => {
+        event.preventDefault()
+        console.log('form submited', name, position, image, team )
+        onRegister({
+            name,
+            position,
+            image,
+            team
+        })
+    }
 
-  return (
-    <section className='form'>
-        <form onSubmit={onSave}>
-            <h2>Fill in the data to create the employee's card</h2>
-            <TextField
-              required={true}
-              label="Name"
-              placeholder="Enter name"
-              fieldValue={name}
-              onChanging={fieldValue => setName(fieldValue)}/>
-
-            <TextField
-              required={true}
-              label="Position"
-              placeholder="Enter position"
-              fieldValue={position}
-              onChanging={fieldValue => setPosition(fieldValue)}/>
-              
-
-            
-            <TextField
-              label="Image"
-              placeholder="Enter image address"
-              fieldValue={image}
-              onChanging={fieldValue => setImage(fieldValue)}/>
-
-            <Dropdown
-              required={true}
-              label="Team"
-              items={props.teams}
-              fieldValue={team}
-              onChanging={fieldValue => setTeam(fieldValue)}/>
-
-            <Button text="Create Card"/>
-        </form>
-    </section>
-  )
+    return (
+        <section className="form-container">
+            <form className="form" onSubmit={onSubmit}>
+                <h2>Fill in the data to create the employee's card.</h2>
+                <Field
+                    mandatory={true}
+                    label='Name'
+                    placeholder='Enter name '
+                    fieldValue={name}
+                    onChanged={fieldValue => setName(fieldValue)}/>
+                <Field
+                    mandatory={true}
+                    label='Position' 
+                    placeholder='Enter position '
+                    fieldValue={position}
+                    onChanged={fieldValue => setPosition(fieldValue)}/>
+                <Field 
+                    label='Image' 
+                    placeholder='Enter image address '
+                    onChanged={fieldValue => setImage(fieldValue)}/>
+                <Dropdown 
+                    mandatory={true}
+                    label='Teams'
+                    items={teams} 
+                    fieldValue={team}
+                    onChanged={fieldValue => setTeam(fieldValue)}/>
+                <Button text='Create card' />
+            </form>
+            <form className="form" onSubmit={(event) => {
+                event.preventDefault()
+                registerTeam({name: nameTeam, color: colorTeam})
+            }}>
+                <h2>Fill in the data to create a new team.</h2>
+                <Field
+                    mandatory
+                    label='Name'
+                    placeholder='Enter team name '
+                    fieldValue={nameTeam}
+                    onChanged={fieldValue => setNameTeam(fieldValue)}
+                />
+                <Field
+                    mandatory
+                    type='color'
+                    label='Color' 
+                    placeholder='Choose team color '
+                    fieldValue={colorTeam}
+                    onChanged={fieldValue => setColorTeam(fieldValue)}
+                />
+                <Button text='Create new team' />
+            </form>
+        </section>
+    )
 }
 
 export default Form
